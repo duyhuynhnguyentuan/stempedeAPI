@@ -123,9 +123,9 @@ router.get("/:id", getLabByID);
  *             schema:
  *               type: object
  *               properties:
- *                 rowsAffected:
- *                   type: integer
- *                   description: Number of rows affected in the database
+ *                 message:
+ *                   type: string
+ *                   description: Response message
  *       500:
  *         description: Server error while creating the lab
  */
@@ -167,9 +167,9 @@ router.post("/", createLab);
  *             schema:
  *               type: object
  *               properties:
- *                 rowsAffected:
- *                   type: integer
- *                   description: Number of rows affected in the database
+ *                 message:
+ *                   type: string
+ *                   description: Response message
  *       404:
  *         description: Lab not found
  *       500:
