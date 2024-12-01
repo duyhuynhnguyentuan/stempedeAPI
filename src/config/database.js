@@ -52,7 +52,7 @@ class Database {
     const request = this.poolconnection.request();
     const result = await request
       .input('id', sql.Int, +id)
-      .query(`SELECT * Labs WHERE LabID = @id`);
+      .query(`SELECT * FROM Labs WHERE LabID = @id`);
     return result.recordset[0];
   }
 
