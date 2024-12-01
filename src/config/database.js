@@ -44,12 +44,12 @@ class Database {
   ///LABS SQL Query
   async createLab(data) {
     const request = this.poolconnection.request();
-    request.input('LabID', sql.Int, data.LabID )
+    // request.input('LabID', sql.Int, data.LabID )
     request.input('LabName', sql.NVarChar(255), data.LabName);
     request.input('Description', sql.NVarChar(255), data.Description);
     request.input('LabFileURL', sql.NVarChar(255), data.LabFileURL);
     const result = await request.query(
-      `INSERT INTO Labs (LabID, LabName, Description, LabFileURL) VALUES (@LabID, @LabName, @Description, @LabFileURL)`
+      `INSERT INTO Labs (LabName, Description, LabFileURL) VALUES (@LabName, @Description, @LabFileURL)`
     );
 
     return result.rowsAffected[0];

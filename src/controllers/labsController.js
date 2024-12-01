@@ -39,6 +39,7 @@ const getLabByID = asyncHandler(async (req, res)=> {
 const createLab = asyncHandler(async (req, res) => {
  try {
     const lab = req.body;
+    delete lab.labID
     const rowsAffected = await database.createLab(lab);
     res.status(201).json({ rowsAffected });
  } catch (err) {
@@ -70,10 +71,14 @@ const deleteALab = asyncHandler(async (req, res) => {
           res.status(404);
         } else {
           const rowsAffected = await database.deleteALab(labID);
-          res.status(204).json({ rowsAffected });
+          res.status(204).json({ 
+            message: 'Delete a lab successfully'
+           });
         }
       } catch (err) {
-        res.status(500).json({ error: err?.message });
+        res.status(500).json({
+            error: err?.message 
+        });
       }
 })
 module.exports = {
