@@ -42,6 +42,18 @@ class Database {
   }
 
   ///LABS SQL Query
+  async createLab(data) {
+    const request = this.poolconnection.request();
+    request.input('LabID', sql.Int, data.LabID )
+    request.input('LabName', sql.NVarChar(255), data.LabName);
+    request.input('Description', sql.NVarChar(255), data.Description);
+    request.input('LabFileURL', sql.NVarChar(255), data.LabFileURL);
+    const result = await request.query(
+      `INSERT INTO Labs (LabID, LabName, Description, LabFileURL) VALUES (@LabID, @LabName, @Description, @LabFileURL)`
+    );
+
+    return result.rowsAffected[0];
+  }
   async readAllLabs() {
     const request = this.poolconnection.request();
     const result = await request.query('SELECT * FROM Labs');
@@ -55,7 +67,30 @@ class Database {
       .query(`SELECT * FROM Labs WHERE LabID = @id`);
     return result.recordset[0];
   }
+  async updateALab(id, data) {
+    const request = this.poolconnection.request();
 
+    request.input('id', sql.Int, +id)
+    request.input('LabName', sql.NVarChar(255), data.LabName);
+    request.input('Description', sql.NVarChar(255), data.Description);
+    request.input('LabFileURL', sql.NVarChar(255), data.LabFileURL);
+
+    const result = await request.query(
+      `UPDATE Labs SET LabName=@LabName, Description=@Description, LabFileURL=@LabFileURL WHERE LabID = @id`
+    );
+
+    return result.rowsAffected[0];
+  }
+  async deleteALab(id) {
+    const idAsNumber = Number(id);
+
+    const request = this.poolconnection.request();
+    const result = await request
+      .input('id', sql.Int, idAsNumber)
+      .query(`DELETE FROM Labs WHERE LabID = @id`);
+
+    return result.rowsAffected[0];
+  }
 }
 
 // CommonJS export

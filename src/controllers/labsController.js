@@ -36,8 +36,51 @@ const getLabByID = asyncHandler(async (req, res)=> {
     }
 })
 
+const createLab = asyncHandler(async (req, res) => {
+ try {
+    const lab = req.body;
+    const rowsAffected = await database.createLab(lab);
+    res.status(201).json({ rowsAffected });
+ } catch (err) {
+    res.status(500).json({ error: err?.message });
+ }
+})
+
+const updateALab = asyncHandler(async (req, res) => {
+    try {
+        const labID = req.params.id;
+        const lab = req.body
+        if(labID && lab){
+            delete lab.labID
+            const rowsAffected = await database.updateALab(labID, lab);
+            res.status(200).json({ rowsAffected });
+        } else {
+            res.status(404);
+        }
+    } catch (err) {
+        res.status(500).json({ error: err?.message });
+    }
+})
+
+const deleteALab = asyncHandler(async (req, res) => {
+    try {
+        // Delete the person with the specified ID
+        const labID = req.params.id;
+        if (!labID) {
+          res.status(404);
+        } else {
+          const rowsAffected = await database.deleteALab(labID);
+          res.status(204).json({ rowsAffected });
+        }
+      } catch (err) {
+        res.status(500).json({ error: err?.message });
+      }
+})
 module.exports = {
   getAllLabs,
-  getLabByID
+  getLabByID,
+  createLab,
+  updateALab,
+  deleteALab,
 };
 
