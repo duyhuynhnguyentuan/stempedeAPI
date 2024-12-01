@@ -41,14 +41,21 @@ class Database {
     return result.rowsAffected[0];
   }
 
-///LABS SQL Query
+  ///LABS SQL Query
   async readAllLabs() {
     const request = this.poolconnection.request();
     const result = await request.query('SELECT * FROM Labs');
 
     return result.recordsets[0];
   }
-  
+  async readALab(id){
+    const request = this.poolconnection.request();
+    const result = await request
+      .input('id', sql.Int, +id)
+      .query(`SELECT * Labs WHERE LabID = @id`);
+    return result.recordset[0];
+  }
+
 }
 
 // CommonJS export

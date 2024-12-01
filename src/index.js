@@ -21,11 +21,11 @@ const options = {
     servers: [
       {
         url: "https://stempedeapi.onrender.com",
-        description: "Development server",
+        description: "Production server",
       },
       {
         url: "/api-docs",
-        description: "Production server",
+        description: "Development server",
       }
     ],
   },
