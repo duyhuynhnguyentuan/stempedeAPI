@@ -41,12 +41,14 @@ class Database {
     return result.rowsAffected[0];
   }
 
+///LABS SQL Query
   async readAllLabs() {
     const request = this.poolconnection.request();
     const result = await request.query('SELECT * FROM Labs');
 
     return result.recordsets[0];
   }
+  
 }
 
 // CommonJS export

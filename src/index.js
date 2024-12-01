@@ -20,11 +20,11 @@ const options = {
     },
     servers: [
       {
-        url: "http://localhost:8000",
+        url: "https://stempedeapi.onrender.com",
         description: "Development server",
       },
       {
-        url: "https://universityadmission.onrender.com",
+        url: "/api-docs",
         description: "Production server",
       }
     ],
