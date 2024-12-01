@@ -37,50 +37,55 @@ const getLabByID = asyncHandler(async (req, res)=> {
 })
 
 const createLab = asyncHandler(async (req, res) => {
- try {
-    const lab = req.body;
-    delete lab.labID
-    const rowsAffected = await database.createLab(lab);
-    res.status(201).json({ rowsAffected });
- } catch (err) {
-    res.status(500).json({ error: err?.message });
- }
-})
+    try {
+      const lab = req.body;
+      const rowsAffected = await database.createLab(lab);
+      res.status(201).json({ message: "Lab created successfully" });
+    } catch (err) {
+      res.status(500).json({ error: err?.message });
+    }
+  });
+  
 
-const updateALab = asyncHandler(async (req, res) => {
+  const updateALab = asyncHandler(async (req, res) => {
+    try {
+      const labID = req.params.id;
+      const lab = req.body;
+      if (labID && lab) {
+        delete lab.labID;
+        const rowsAffected = await database.updateALab(labID, lab);
+        if (rowsAffected > 0) {
+          res.status(200).json({ message: "Lab updated successfully" });
+        } else {
+          res.status(404).json({ error: "Lab not found" });
+        }
+      } else {
+        res.status(400).json({ error: "Lab ID and data are required" });
+      }
+    } catch (err) {
+      res.status(500).json({ error: err?.message });
+    }
+  });
+  
+
+const deleteALab = asyncHandler(async (req, res) => {
     try {
         const labID = req.params.id;
-        const lab = req.body
-        if(labID && lab){
-            delete lab.labID
-            const rowsAffected = await database.updateALab(labID, lab);
-            res.status(200).json({ rowsAffected });
+        if (!labID) {
+            res.status(404).json({ error: "Lab ID not provided" });
         } else {
-            res.status(404);
+            const rowsAffected = await database.deleteALab(labID);
+            if (rowsAffected > 0) {
+                res.status(200).json({ message: "Lab deleted successfully"});
+            } else {
+                res.status(404).json({ error: "Lab not found" });
+            }
         }
     } catch (err) {
         res.status(500).json({ error: err?.message });
     }
-})
+});
 
-const deleteALab = asyncHandler(async (req, res) => {
-    try {
-        // Delete the person with the specified ID
-        const labID = req.params.id;
-        if (!labID) {
-          res.status(404);
-        } else {
-          const rowsAffected = await database.deleteALab(labID);
-          res.status(204).json({ 
-            message: 'Delete a lab successfully'
-           });
-        }
-      } catch (err) {
-        res.status(500).json({
-            error: err?.message 
-        });
-      }
-})
 module.exports = {
   getAllLabs,
   getLabByID,
