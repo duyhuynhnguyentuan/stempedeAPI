@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { registerUser, loginUser, logoutUser, fetchAllUsers } = require('../controllers/authController');
+const { registerUser, loginUser, logoutUser, fetchAllUsers, updateUser } = require('../controllers/authController');
 
 /**
  * @swagger
@@ -146,5 +146,52 @@ router.post('/logout', logoutUser);
  *         description: Server error while fetching users
  */
 router.get('/users', fetchAllUsers);
+
+/**
+ * @swagger
+ * /api/v1/users/{id}:
+ *   put:
+ *     tags:
+ *       - Users
+ *     summary: Update a specific user by ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The ID of the user to update
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               FullName:
+ *                 type: string
+ *               Username:
+ *                 type: string
+ *               Email:
+ *                 type: string
+ *               Phone:
+ *                 type: string
+ *               Address:
+ *                 type: string
+ *               Status:
+ *                 type: boolean
+ *               IsExternal:
+ *                 type: boolean
+ *               ExternalProvider:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: User updated successfully
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Server error while updating the user
+ */
+router.put("/:id", updateUser);
 
 module.exports = router;

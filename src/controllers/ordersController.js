@@ -40,6 +40,21 @@ const getOrderByID = asyncHandler(async (req, res) => {
   }
 });
 
+const fetchOrdersByUserID = asyncHandler(async (req, res) => {
+    try {
+      const userID = req.params.userID;  // Get UserID from URL
+  
+      const orders = await database.fetchOrdersByUserID(userID);
+      
+      if (orders.length > 0) {
+        res.status(200).json({ orders });
+      } else {
+        res.status(404).json({ message: 'No orders found for this user.' });
+      }
+    } catch (err) {
+      res.status(500).json({ message: err?.message });
+    }
+  });
 const updateOrder = asyncHandler(async (req, res) => {
   try {
     const orderID = req.params.id;
@@ -74,5 +89,6 @@ module.exports = {
   getAllOrders,
   getOrderByID,
   updateOrder,
-  deleteOrder
+  deleteOrder,
+  fetchOrdersByUserID
 };

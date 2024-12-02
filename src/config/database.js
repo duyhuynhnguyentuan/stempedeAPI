@@ -130,6 +130,30 @@ async fetchAllUsers() {
     const result = await request.query('SELECT * FROM Users');
     return result.recordsets[0];  // Returns all users in the Users table
   }
+  async updateUser(id, data) {
+    const request = this.poolconnection.request();
+    
+    request.input('id', sql.Int, id);
+    request.input('FullName', sql.NVarChar(255), data.FullName);
+    request.input('Username', sql.NVarChar(50), data.Username);
+    request.input('Password', sql.NVarChar(255), data.Password);  // Should be the hashed password
+    request.input('Email', sql.NVarChar(255), data.Email);
+    request.input('Phone', sql.NVarChar(255), data.Phone);
+    request.input('Address', sql.NVarChar(255), data.Address);
+    request.input('Status', sql.Bit, data.Status);
+    request.input('IsExternal', sql.Bit, data.IsExternal);
+    request.input('ExternalProvider', sql.NVarChar(50), data.ExternalProvider);
+  
+    const result = await request.query(
+      `UPDATE Users
+       SET FullName = @FullName, Username = @Username, Password = @Password, 
+           Email = @Email, Phone = @Phone, Address = @Address, 
+           Status = @Status, IsExternal = @IsExternal, ExternalProvider = @ExternalProvider
+       WHERE UserID = @id`
+    );
+  
+    return result.rowsAffected[0];  // Returns the number of affected rows
+  }
   ///Order
   async createOrder(data) {
     const request = this.poolconnection.request();
@@ -156,6 +180,18 @@ async fetchAllUsers() {
       .query('SELECT * FROM Orders WHERE OrderID = @id');
     return result.recordset[0];
   }
+  // In config/database.js
+
+async fetchOrdersByUserID(userID) {
+    const request = this.poolconnection.request();
+    
+    const result = await request
+      .input('UserID', sql.Int, userID)
+      .query('SELECT * FROM Orders WHERE UserID = @UserID');
+    
+    return result.recordsets[0];  // Returns all orders for the given UserID
+  }
+  
   async updateOrder(id, data) {
     const request = this.poolconnection.request();
     request.input('id', sql.Int, id);

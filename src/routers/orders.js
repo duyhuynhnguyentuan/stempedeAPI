@@ -5,7 +5,8 @@ const {
   getAllOrders,
   getOrderByID,
   updateOrder,
-  deleteOrder
+  deleteOrder,
+  fetchOrdersByUserID
 } = require("../controllers/ordersController");
 
 /**
@@ -146,5 +147,48 @@ router.put("/:id", updateOrder);
  *         description: Server error while deleting the order
  */
 router.delete("/:id", deleteOrder);
+
+/**
+ * @swagger
+ * /api/v1/orders/user/{userID}:
+ *   get:
+ *     tags:
+ *       - Orders
+ *     summary: Get all orders by a specific user ID
+ *     parameters:
+ *       - in: path
+ *         name: userID
+ *         required: true
+ *         description: The ID of the user whose orders to fetch
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Orders found successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 orders:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       OrderID:
+ *                         type: integer
+ *                       UserID:
+ *                         type: integer
+ *                       OrderDate:
+ *                         type: string
+ *                       TotalAmount:
+ *                         type: number
+ *                         format: float
+ *       404:
+ *         description: No orders found for this user
+ *       500:
+ *         description: Server error while fetching orders
+ */
+router.get("/user/:userID", fetchOrdersByUserID);
 
 module.exports = router;
