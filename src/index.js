@@ -33,6 +33,7 @@ const options = {
 };
 //router import
 const labsRouter = require('./routers/labs');
+const authRouter = require('./routers/auth');
 //routes 
 // const pathToSpec = join(__dirname, './openApiSchema.yml');
 // const openApiSpec = yaml.load(pathToSpec);
@@ -46,6 +47,7 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use("/api/v1/labs", labsRouter)
+app.use("/api/v1/auth", authRouter)
 app.listen(port, () => {
   console.log(`App listening on port http://localhost:${port}`);
 });

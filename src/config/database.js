@@ -1,3 +1,4 @@
+//config/database.js
 const sql = require('mssql');
 let database = null;
 
@@ -91,6 +92,38 @@ class Database {
 
     return result.rowsAffected[0];
   }
+  // Add these methods to your `Database` class
+
+// Read user by username (for login)
+async readUserByUsername(username) {
+    const request = this.poolconnection.request();
+    const result = await request
+      .input('Username', sql.NVarChar(50), username)
+      .query('SELECT * FROM Users WHERE Username = @Username');
+    return result.recordset[0];  // Returns the first matching user (or undefined if no match)
+  }
+  
+  // Create user (for registration)
+  async createUser(user) {
+    const request = this.poolconnection.request();
+    request.input('FullName', sql.NVarChar(255), user.FullName);
+    request.input('Username', sql.NVarChar(50), user.Username);
+    request.input('Password', sql.NVarChar(255), user.Password); // This should be the hashed password
+    request.input('Email', sql.NVarChar(255), user.Email);
+    request.input('Phone', sql.NVarChar(255), user.Phone);
+    request.input('Address', sql.NVarChar(255), user.Address);
+    request.input('Status', sql.Bit, user.Status);
+    request.input('IsExternal', sql.Bit, user.IsExternal);
+    request.input('ExternalProvider', sql.NVarChar(50), user.ExternalProvider);
+  
+    const result = await request.query(`
+      INSERT INTO Users (FullName, Username, Password, Email, Phone, Address, Status, IsExternal, ExternalProvider)
+      VALUES (@FullName, @Username, @Password, @Email, @Phone, @Address, @Status, @IsExternal, @ExternalProvider)
+    `);
+  
+    return result.rowsAffected[0];  // Returns the number of affected rows
+  }
+  
 }
 
 // CommonJS export
