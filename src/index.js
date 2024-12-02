@@ -34,6 +34,10 @@ const options = {
 //router import
 const labsRouter = require('./routers/labs');
 const authRouter = require('./routers/auth');
+const ordersRouter = require('./routers/orders');
+const ordersDetailRouter = require('./routers/orderDetail')
+const productsRouter = require('./routers/products');
+const subcategoriesRouter = require('./routers/subcategories');
 //routes 
 // const pathToSpec = join(__dirname, './openApiSchema.yml');
 // const openApiSpec = yaml.load(pathToSpec);
@@ -48,6 +52,10 @@ app.use(cors({
 app.use(express.json());
 app.use("/api/v1/labs", labsRouter)
 app.use("/api/v1/auth", authRouter)
+app.use("/api/v1/orders", ordersRouter)
+app.use("/api/v1/orderdetails", ordersDetailRouter)
+app.use("/api/v1/products", productsRouter)
+app.use("/api/v1/subcategories", subcategoriesRouter)
 app.listen(port, () => {
   console.log(`App listening on port http://localhost:${port}`);
 });
