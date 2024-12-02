@@ -149,7 +149,7 @@ router.get('/users', fetchAllUsers);
 
 /**
  * @swagger
- * /api/v1/users/{id}:
+ * /api/v1/auth/{id}:
  *   put:
  *     tags:
  *       - Users
