@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { registerUser, loginUser, logoutUser } = require('../controllers/authController');
+const { registerUser, loginUser, logoutUser, fetchAllUsers } = require('../controllers/authController');
 
 /**
  * @swagger
@@ -96,5 +96,55 @@ router.post('/login', loginUser);
  *         description: Logout successful
  */
 router.post('/logout', logoutUser);
+
+/**
+ * @swagger
+ * /api/v1/auth/users:
+ *   get:
+ *     tags:
+ *       - Auth
+ *     summary: Fetch all registered users
+ *     description: Returns a list of all users in the system (for debugging or verification).
+ *     responses:
+ *       200:
+ *         description: A list of users in the system
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   UserID:
+ *                     type: integer
+ *                     description: The ID of the user
+ *                   FullName:
+ *                     type: string
+ *                     description: The full name of the user
+ *                   Username:
+ *                     type: string
+ *                     description: The username of the user
+ *                   Email:
+ *                     type: string
+ *                     description: The email address of the user
+ *                   Phone:
+ *                     type: string
+ *                     description: The phone number of the user
+ *                   Address:
+ *                     type: string
+ *                     description: The address of the user
+ *                   Status:
+ *                     type: boolean
+ *                     description: The status of the user (active/inactive)
+ *                   IsExternal:
+ *                     type: boolean
+ *                     description: Indicates whether the user is an external user (e.g., through OAuth)
+ *                   ExternalProvider:
+ *                     type: string
+ *                     description: The external provider if the user is external
+ *       500:
+ *         description: Server error while fetching users
+ */
+router.get('/users', fetchAllUsers);
 
 module.exports = router;

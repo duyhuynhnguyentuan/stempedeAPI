@@ -94,6 +94,7 @@ class Database {
   }
   // Add these methods to your `Database` class
 
+///AUTHORIZATION
 // Read user by username (for login)
 async readUserByUsername(username) {
     const request = this.poolconnection.request();
@@ -123,6 +124,15 @@ async readUserByUsername(username) {
   
     return result.rowsAffected[0];  // Returns the number of affected rows
   }
+  // Add this method to your `Database` class
+
+// Fetch all users from the Users table
+async fetchAllUsers() {
+    const request = this.poolconnection.request();
+    const result = await request.query('SELECT * FROM Users');
+    return result.recordsets[0];  // Returns all users in the Users table
+  }
+  
   
 }
 
