@@ -152,7 +152,7 @@ router.get('/users', fetchAllUsers);
  * /api/v1/auth/{id}:
  *   put:
  *     tags:
- *       - Users
+ *       - Auth
  *     summary: Update a specific user by ID
  *     parameters:
  *       - in: path
